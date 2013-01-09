@@ -1,0 +1,10 @@
+#title-panel {
+    /*font-size: 1.5em;*/
+    background: url(./img/layout-browser-hd-bg.gif) repeat-x scroll center center;
+}
+#title-panel h1 {
+    color: white;
+    font-size: 16px;
+    font-weight: normal;
+    padding: 5px 10px;
+}
