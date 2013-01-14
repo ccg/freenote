@@ -26,17 +26,17 @@ Ext.define('App.view.NotePanel', {
                     items: [
                         {
                             xtype: 'button',
-                            icon: './icons/disk.png',
+                            icon: './img/icons/disk.png',
                             text: 'Save Changes'
                         },
                         {
                             xtype: 'button',
-                            icon: './icons/cross.png',
+                            icon: './img/icons/cross.png',
                             text: 'Discard Changes'
                         },
                         {
                             xtype: 'button',
-                            icon: './icons/delete.png',
+                            icon: './img/icons/delete.png',
                             text: 'Delete Note'
                         }
                     ]
