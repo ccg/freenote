@@ -26,6 +26,6 @@ Ext.define('App.controller.NotePanelViewController', {
     },
 
     setTitle: function (title) {
-        this.getView().title = title
+        this.getView().setTitle(title);
     }
 });
