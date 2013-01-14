@@ -1,11 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: chad
- * Date: 1/2/13
- * Time: 3:49 PM
- * To change this template use File | Settings | File Templates.
- */
-
 Ext.define('App.mock.store.NoteListStore', {
     extend: 'Ext.data.TreeStore',
     model: 'App.model.Note',
