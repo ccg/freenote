@@ -56,14 +56,7 @@ describe "The NoteListPanel", ->
       expect(viewController.getView() is view).toBeTruthy();
 
     it "has a reference to the global message bus", ->
-      expect(viewController.getMessageBus()).toBeDefined()
       expect(viewController.getMessageBus()).toBeTruthy()
-
-    describe "messageBus reference", ->
-      it "has a noteSelected message", ->
-        noteSelected = viewController.getMessageBus().noteSelected
-        expect(noteSelected).toBeDefined()
-        expect(typeof noteSelected).toEqual("function")
 
   # The mock Store has two items in it.
   it "has a root node", ->
@@ -75,24 +68,29 @@ describe "The NoteListPanel", ->
   it "has an underlying table with two rows (root node hidden)", ->
     expect(view.getView().getNodes().length).toEqual(2)
 
+
   describe "when a note (row) is selected", ->
 
-    it "calls noteSelected on the global messageBus", ->
-      view.getSelectionModel().select(0)
-      expect(viewController.getMessageBus().noteSelected.calledOnce).toBeTruthy()
+    testListener = null
+    messageBus = null
+    selectionModel = null
 
-    it "calls noteSelected with the note-model instance", ->
+    beforeEach( ->
+      testListener = sinon.spy()
+      messageBus = viewController.getMessageBus()
+      messageBus.addListener('noteselected', testListener)
       selectionModel = view.getSelectionModel()
+    )
+
+    afterEach( ->
+      messageBus.removeListener('noteselected', testListener)
+    )
+
+    it "fires a 'noteselected' event on the global message bus", ->
+      selectionModel.select(0)
+      expect(testListener.calledOnce).toBe(true)
+
+    it "fires 'noteselected' with the note-model instance", ->
       note = selectionModel.getStore().getAt(0)
       selectionModel.select(0)
-      # this jasmine-sinon matcher causes firefox to hang(!):
-#      expect(viewController.getMessageBus().noteSelected).toHaveBeenCalledWith(note)
-      expect(viewController.getMessageBus().noteSelected.calledWith(note)).toBeTruthy()
-
-#
-#  describe "the Note Panel View Controller", ->
-#    it "can change the Note Panel's title", ->
-#      testTitle = "New Test Title"
-#      expect(view.title).not.toEqual(testTitle)
-#      viewController.setTitle(testTitle)
-#      expect(view.title).toEqual(testTitle)
+      expect(testListener.calledWith(note)).toBeTruthy()

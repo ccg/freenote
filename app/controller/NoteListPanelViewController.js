@@ -21,6 +21,6 @@ Ext.define('App.controller.NoteListPanelViewController', {
     },
 
     _onSelect: function (rowModel, record, index, eOpts) {
-        this.getMessageBus().noteSelected(record);
+        this.getMessageBus().fireEvent('noteselected', record);
     }
 });

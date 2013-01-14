@@ -46,17 +46,8 @@
       it("has a reference to the correct NoteListPanel view instance", function() {
         return expect(viewController.getView() === view).toBeTruthy();
       });
-      it("has a reference to the global message bus", function() {
-        expect(viewController.getMessageBus()).toBeDefined();
+      return it("has a reference to the global message bus", function() {
         return expect(viewController.getMessageBus()).toBeTruthy();
-      });
-      return describe("messageBus reference", function() {
-        return it("has a noteSelected message", function() {
-          var noteSelected;
-          noteSelected = viewController.getMessageBus().noteSelected;
-          expect(noteSelected).toBeDefined();
-          return expect(typeof noteSelected).toEqual("function");
-        });
       });
     });
     it("has a root node", function() {
@@ -69,16 +60,28 @@
       return expect(view.getView().getNodes().length).toEqual(2);
     });
     return describe("when a note (row) is selected", function() {
-      it("calls noteSelected on the global messageBus", function() {
-        view.getSelectionModel().select(0);
-        return expect(viewController.getMessageBus().noteSelected.calledOnce).toBeTruthy();
+      var messageBus, selectionModel, testListener;
+      testListener = null;
+      messageBus = null;
+      selectionModel = null;
+      beforeEach(function() {
+        testListener = sinon.spy();
+        messageBus = viewController.getMessageBus();
+        messageBus.addListener('noteselected', testListener);
+        return selectionModel = view.getSelectionModel();
       });
-      return it("calls noteSelected with the note-model instance", function() {
-        var note, selectionModel;
-        selectionModel = view.getSelectionModel();
+      afterEach(function() {
+        return messageBus.removeListener('noteselected', testListener);
+      });
+      it("fires a 'noteselected' event on the global message bus", function() {
+        selectionModel.select(0);
+        return expect(testListener.calledOnce).toBe(true);
+      });
+      return it("fires 'noteselected' with the note-model instance", function() {
+        var note;
         note = selectionModel.getStore().getAt(0);
         selectionModel.select(0);
-        return expect(viewController.getMessageBus().noteSelected.calledWith(note)).toBeTruthy();
+        return expect(testListener.calledWith(note)).toBeTruthy();
       });
     });
   });

@@ -15,7 +15,5 @@ Ext.onReady ->
   #    noteStore: 'App.store.NoteStore'
     noteStore: 'App.mock.store.NoteStore',
     noteListStore: 'App.mock.store.NoteListStore'
-    messageBus:
-      value:
-        noteSelected: -> console.log('note selected!')
+    messageBus: 'App.util.MessageBus'
 

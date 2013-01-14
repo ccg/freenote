@@ -43,17 +43,37 @@
       it("is an instance of App.controller.NotePanelViewController", function() {
         return expect(viewController instanceof App.controller.NotePanelViewController).toBeTruthy();
       });
-      return it("has a reference to the correct Note Panel view instance", function() {
+      it("has a reference to the correct Note Panel view instance", function() {
         return expect(viewController.getView() === view).toBeTruthy();
       });
+      return it("has a reference to the global messageBus", function() {
+        return expect(viewController.getMessageBus()).toBeTruthy();
+      });
     });
-    return describe("the Note Panel View Controller", function() {
+    describe("the Note Panel View Controller", function() {
       return it("can change the Note Panel's title", function() {
         var testTitle;
         testTitle = "New Test Title";
         expect(view.title).not.toEqual(testTitle);
         viewController.setTitle(testTitle);
         return expect(view.title).toEqual(testTitle);
+      });
+    });
+    return describe("when it hears a 'noteselected' event on the message bus", function() {
+      var messageBus, noteListStore;
+      messageBus = null;
+      noteListStore = null;
+      beforeEach(function() {
+        messageBus = viewController.getMessageBus();
+        return noteListStore = Deft.Injector.resolve('noteListStore');
+      });
+      return it("changes the title to the note's title", function() {
+        var noteRecord, noteTitle;
+        noteRecord = noteListStore.getById(1);
+        noteTitle = noteRecord.get('title');
+        expect(view.title).not.toEqual(noteTitle);
+        messageBus.fireEvent('noteselected', noteRecord);
+        return expect(view.title).toEqual(noteTitle);
       });
     });
   });

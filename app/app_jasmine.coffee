@@ -13,11 +13,9 @@ Ext.onReady ->
   Deft.Injector.configure
   #    companyStore: 'JasmineExample.store.CompanyStore'
   #    noteStore: 'App.store.NoteStore'
-    noteStore: 'App.mock.store.NoteStore',
+    noteStore: 'App.mock.store.NoteStore'
     noteListStore: 'App.mock.store.NoteListStore'
-    messageBus:
-      value:
-        noteSelected: sinon.spy()
+    messageBus: 'App.util.MessageBus'
 
   # Don't initiate the Jasmine spec runner until Ext JS is ready.
   execJasmine()

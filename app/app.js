@@ -17,13 +17,7 @@
     return Deft.Injector.configure({
       noteStore: 'App.mock.store.NoteStore',
       noteListStore: 'App.mock.store.NoteListStore',
-      messageBus: {
-        value: {
-          noteSelected: function() {
-            return console.log('note selected!');
-          }
-        }
-      }
+      messageBus: 'App.util.MessageBus'
     });
   });
 

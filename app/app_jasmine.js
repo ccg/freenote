@@ -17,11 +17,7 @@
     Deft.Injector.configure({
       noteStore: 'App.mock.store.NoteStore',
       noteListStore: 'App.mock.store.NoteListStore',
-      messageBus: {
-        value: {
-          noteSelected: sinon.spy()
-        }
-      }
+      messageBus: 'App.util.MessageBus'
     });
     return execJasmine();
   });
