@@ -6,12 +6,10 @@ Ext.define('App.controller.NotePanelViewController', {
       messageBus: null
     },
 
-    init: function () {
-        var messageBus = this.getMessageBus();
-        // Need to pass 'this' as scope (third parameter) or else callback
-        // will execute in messageBus's scope, i.e., this=messageBus.
-        messageBus.addListener('noteselected', this._onNoteSelected, this);
-        return this.callParent(arguments);
+    observe: {
+        messageBus: {
+            noteselected: '_onNoteSelected'
+        }
     },
 
     _onNoteSelected: function (note) {
