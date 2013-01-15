@@ -15,10 +15,20 @@ Ext.define('App.controller.NotePanelViewController', {
     },
 
     _onNoteSelected: function (note) {
-        this.setTitle(note.get('title'));
+        this._setTitle(note.get('title'));
+        this._getNoteBodyField().setValue(note.get('body'));
     },
 
-    setTitle: function (title) {
+    _getNoteBodyField: function () {
+        var noteBodyField = this.getView().getComponent('notebodyfield');
+        if (!noteBodyField) {
+            console.warn('_getNoteBodyField problem! notebodyfield is:');
+            console.warn(noteBodyField);
+        }
+        return noteBodyField;
+    },
+
+    _setTitle: function (title) {
         this.getView().setTitle(title);
     }
 });

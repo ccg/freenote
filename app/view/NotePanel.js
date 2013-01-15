@@ -16,6 +16,7 @@ Ext.define('App.view.NotePanel', {
             items: [
                 {
                     xtype: 'textareafield',
+                    itemId: 'notebodyfield',
                     border: 0
                 }
             ],

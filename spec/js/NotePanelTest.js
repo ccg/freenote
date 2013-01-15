@@ -51,12 +51,17 @@
       });
     });
     describe("the Note Panel View Controller", function() {
-      return it("can change the Note Panel's title", function() {
+      it("can change the Note Panel's title", function() {
         var testTitle;
         testTitle = "New Test Title";
         expect(view.title).not.toEqual(testTitle);
-        viewController.setTitle(testTitle);
+        viewController._setTitle(testTitle);
         return expect(view.title).toEqual(testTitle);
+      });
+      return it("can get the note's body textarea with ._getNoteBodyField", function() {
+        var noteBodyField;
+        noteBodyField = viewController._getNoteBodyField();
+        return expect(noteBodyField instanceof Ext.form.field.TextArea).toBeTruthy();
       });
     });
     return describe("when it hears a 'noteselected' event on the message bus", function() {
@@ -67,13 +72,22 @@
         messageBus = viewController.getMessageBus();
         return noteListStore = Deft.Injector.resolve('noteListStore');
       });
-      return it("changes the title to the note's title", function() {
+      it("changes the title to the note's title", function() {
         var noteRecord, noteTitle;
         noteRecord = noteListStore.getById(1);
         noteTitle = noteRecord.get('title');
         expect(view.title).not.toEqual(noteTitle);
         messageBus.fireEvent('noteselected', noteRecord);
         return expect(view.title).toEqual(noteTitle);
+      });
+      return it("changes the content of the textarea to the note's body", function() {
+        var noteBody, noteBodyField, noteRecord;
+        noteRecord = noteListStore.getById(1);
+        noteBody = noteRecord.get('body');
+        noteBodyField = viewController._getNoteBodyField();
+        expect(noteBodyField.getValue()).not.toEqual(noteBody);
+        messageBus.fireEvent('noteselected', noteRecord);
+        return expect(noteBodyField.getValue()).toEqual(noteBody);
       });
     });
   });

@@ -64,8 +64,12 @@ describe "The Note Panel", ->
     it "can change the Note Panel's title", ->
       testTitle = "New Test Title"
       expect(view.title).not.toEqual(testTitle)
-      viewController.setTitle(testTitle)
+      viewController._setTitle(testTitle)
       expect(view.title).toEqual(testTitle)
+
+    it "can get the note's body textarea with ._getNoteBodyField", ->
+      noteBodyField = viewController._getNoteBodyField()
+      expect(noteBodyField instanceof Ext.form.field.TextArea).toBeTruthy()
 
 
   describe "when it hears a 'noteselected' event on the message bus", ->
@@ -75,6 +79,8 @@ describe "The Note Panel", ->
 
     beforeEach( ->
       messageBus = viewController.getMessageBus()
+
+      # Get a reference to the mock store with the test data.
       noteListStore = Deft.Injector.resolve('noteListStore')
     )
 
@@ -85,7 +91,10 @@ describe "The Note Panel", ->
       messageBus.fireEvent('noteselected', noteRecord)
       expect(view.title).toEqual(noteTitle)
 
-#    it "changes the content of the textarea to the note's body", ->
-#      noteRecord = noteListStore.getById(1)
-#      noteBody = noteRecord.get('body')
-#      expect(view.) # TODO: left off here...
+    it "changes the content of the textarea to the note's body", ->
+      noteRecord = noteListStore.getById(1)
+      noteBody = noteRecord.get('body')
+      noteBodyField = viewController._getNoteBodyField()
+      expect(noteBodyField.getValue()).not.toEqual(noteBody)
+      messageBus.fireEvent('noteselected', noteRecord)
+      expect(noteBodyField.getValue()).toEqual(noteBody)
